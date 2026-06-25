@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopArc</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: system-ui, sans-serif; background: #f5f5f5; color: #111; }
+
+  /* NAV */
+  .nav { background: #fff; border-bottom: 0.5px solid #e0e0e0; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 10; }
+  .logo { font-size: 20px; font-weight: 600; color: #111; letter-spacing: -0.5px; }
+  .logo span { color: #534AB7; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { font-size: 14px; color: #666; text-decoration: none; cursor: pointer; }
+  .nav-links a:hover { color: #111; }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-right i { font-size: 20px; color: #666; cursor: pointer; }
+  .nav-right i:hover { color: #111; }
+  .cart-badge { position: relative; }
+  .badge { position: absolute; top: -6px; right: -6px; background: #534AB7; color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 10px; display: flex; align-items: center; justify-content: center; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #EEEDFE 0%, #E6F1FB 100%); padding: 4rem 2rem; display: flex; align-items: center; justify-content: space-between; gap: 2rem; }
+  .hero-text h1 { font-size: 42px; font-weight: 600; color: #26215C; line-height: 1.2; margin-bottom: 1rem; }
+  .hero-text p { font-size: 16px; color: #3C3489; margin-bottom: 1.5rem; max-width: 400px; }
+  .hero-btn { background: #534AB7; color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-size: 15px; cursor: pointer; font-family: inherit; }
+  .hero-btn:hover { background: #3C3489; }
+  .hero-img { width: 260px; height: 260px; border-radius: 12px; background: #AFA9EC; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .hero-img i { font-size: 80px; color: #534AB7; }
+
+  /* SECTIONS */
+  .section { padding: 2.5rem 2rem; }
+  .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.5rem; }
+  .section-header h2 { font-size: 20px; font-weight: 600; color: #111; }
+  .see-all { font-size: 14px; color: #534AB7; cursor: pointer; text-decoration: none; }
+
+  /* CATEGORIES */
+  .cats { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 12px; }
+  .cat { background: #fff; border: 0.5px solid #e0e0e0; border-radius: 12px; padding: 1rem; text-align: center; cursor: pointer; transition: border-color 0.15s; }
+  .cat:hover { border-color: #534AB7; }
+  .cat i { font-size: 28px; color: #534AB7; display: block; margin-bottom: 8px; }
+  .cat span { font-size: 13px; color: #666; }
+
+  /* FILTERS */
+  .filters { display: flex; gap: 8px; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .filter-btn { padding: 6px 16px; border-radius: 20px; border: 0.5px solid #e0e0e0; background: #fff; font-size: 13px; color: #666; cursor: pointer; font-family: inherit; }
+  .filter-btn.active, .filter-btn:hover { background: #534AB7; color: #fff; border-color: #534AB7; }
+
+  /* PRODUCTS */
+  .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; }
+  .product-card { background: #fff; border: 0.5px solid #e0e0e0; border-radius: 12px; overflow: hidden; cursor: pointer; transition: border-color 0.15s; }
+  .product-card:hover { border-color: #aaa; }
+  .product-img { height: 160px; display: flex; align-items: center; justify-content: center; font-size: 56px; }
+  .product-info { padding: 12px; }
+  .product-name { font-size: 14px; font-weight: 600; color: #111; margin-bottom: 4px; }
+  .product-brand { font-size: 12px; color: #888; margin-bottom: 8px; }
+  .product-bottom { display: flex; align-items: center; justify-content: space-between; }
+  .product-price { font-size: 15px; font-weight: 600; color: #534AB7; }
+  .product-old { font-size: 12px; color: #aaa; text-decoration: line-through; margin-left: 4px; }
+  .add-btn { width: 30px; height: 30px; border-radius: 50%; background: #534AB7; border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 18px; line-height: 1; }
+  .add-btn:hover { background: #3C3489; }
+  .stars { color: #BA7517; font-size: 12px; margin-bottom: 6px; }
+  .badge-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; margin-bottom: 6px; }
+  .badge-sale { background: #FAECE7; color: #993C1D; }
+  .badge-new { background: #EEEDFE; color: #3C3489; }
+
+  /* BANNER */
+  .banner { margin: 0 2rem 2rem; background: #26215C; border-radius: 12px; padding: 2rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .banner-text h3 { font-size: 22px; font-weight: 600; color: #EEEDFE; margin-bottom: 6px; }
+  .banner-text p { font-size: 14px; color: #AFA9EC; }
+  .banner-btn { background: #EEEDFE; color: #26215C; border: none; padding: 10px 24px; border-radius: 8px; font-size: 14px; cursor: pointer; font-family: inherit; white-space: nowrap; font-weight: 600; }
+
+  /* TOAST */
+  .toast { position: fixed; bottom: 20px; right: 20px; background: #3C3489; color: #EEEDFE; padding: 10px 18px; border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; }
+  .toast.show { opacity: 1; }
+
+  /* FOOTER */
+  .footer { background: #fff; border-top: 0.5px solid #e0e0e0; padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .footer p { font-size: 13px; color: #888; }
+  .footer-links { display: flex; gap: 16px; }
+  .footer-links a { font-size: 13px; color: #888; text-decoration: none; cursor: pointer; }
+  .footer-links a:hover { color: #534AB7; }
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="nav">
+  <div class="logo">Shop<span>Arc</span></div>
+  <div class="nav-links">
+    <a>Home</a>
+    <a>Men</a>
+    <a>Women</a>
+    <a>Electronics</a>
+    <a>Sale</a>
+  </div>
+  <div class="nav-right">
+    <i class="ti ti-search"></i>
+    <i class="ti ti-heart"></i>
+    <div class="cart-badge">
+      <i class="ti ti-shopping-cart"></i>
+      <div class="badge" id="cart-count">0</div>
+    </div>
+    <i class="ti ti-user"></i>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <h1>New season,<br>new style.</h1>
+    <p>Discover curated collections across fashion, electronics, and lifestyle — delivered fast.</p>
+    <button class="hero-btn">Shop the collection</button>
+  </div>
+  <div class="hero-img">
+    <i class="ti ti-shirt"></i>
+  </div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section">
+  <div class="section-header">
+    <h2>Shop by category</h2>
+  </div>
+  <div class="cats">
+    <div class="cat"><i class="ti ti-shirt"></i><span>Fashion</span></div>
+    <div class="cat"><i class="ti ti-device-mobile"></i><span>Electronics</span></div>
+    <div class="cat"><i class="ti ti-armchair"></i><span>Home</span></div>
+    <div class="cat"><i class="ti ti-run"></i><span>Sports</span></div>
+    <div class="cat"><i class="ti ti-book"></i><span>Books</span></div>
+    <div class="cat"><i class="ti ti-leaf"></i><span>Beauty</span></div>
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section" style="padding-top: 0;">
+  <div class="section-header">
+    <h2>Featured products</h2>
+    <a class="see-all">See all →</a>
+  </div>
+  <div class="filters">
+    <button class="filter-btn active" onclick="filterProducts('All', this)">All</button>
+    <button class="filter-btn" onclick="filterProducts('Fashion', this)">Fashion</button>
+    <button class="filter-btn" onclick="filterProducts('Electronics', this)">Electronics</button>
+    <button class="filter-btn" onclick="filterProducts('Home', this)">Home</button>
+    <button class="filter-btn" onclick="filterProducts('Sports', this)">Sports</button>
+  </div>
+  <div class="products" id="product-grid"></div>
+</div>
+
+<!-- BANNER -->
+<div class="banner">
+  <div class="banner-text">
+    <h3>Members get 20% off everything</h3>
+    <p>Join ShopArc Plus and unlock exclusive deals, free delivery, and early access to sales.</p>
+  </div>
+  <button class="banner-btn">Join now</button>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <p>© 2026 ShopArc. All rights reserved.</p>
+  <div class="footer-links">
+    <a>About</a>
+    <a>Privacy</a>
+    <a>Terms</a>
+    <a>Support</a>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">Added to cart!</div>
+
+<script>
+const products = [
+  { name: "Classic Oxford Shirt", brand: "Brooks & Co.", price: 1299, old: 1799, category: "Fashion", emoji: "👔", rating: 4, badge: "sale" },
+  { name: "Wireless Earbuds Pro", brand: "SoundCore", price: 2499, old: null, category: "Electronics", emoji: "🎧", rating: 5, badge: "new" },
+  { name: "Linen Summer Dress", brand: "Zara Essentials", price: 1599, old: 2199, category: "Fashion", emoji: "👗", rating: 4, badge: "sale" },
+  { name: "Smart Watch Series 5", brand: "TechWear", price: 8999, old: 10999, category: "Electronics", emoji: "⌚", rating: 5, badge: "sale" },
+  { name: "Yoga Mat Pro", brand: "FitLife", price: 899, old: null, category: "Sports", emoji: "🧘", rating: 4, badge: "new" },
+  { name: "Minimal Table Lamp", brand: "LumoCo", price: 1199, old: null, category: "Home", emoji: "🪔", rating: 4, badge: null },
+  { name: "Running Shoes X3", brand: "SpeedStep", price: 3499, old: 4299, category: "Sports", emoji: "👟", rating: 5, badge: "sale" },
+  { name: "Ceramic Mug Set", brand: "HomeBrews", price: 599, old: null, category: "Home", emoji: "☕", rating: 4, badge: "new" },
+];
+
+const bgColors = ["#EEEDFE","#E6F1FB","#E1F5EE","#FAECE7","#EAF3DE","#FAEEDA"];
+let cart = 0;
+
+function stars(n) {
+  return '★'.repeat(n) + '☆'.repeat(5 - n);
+}
+
+function renderProducts(filter) {
+  const grid = document.getElementById('product-grid');
+  const list = filter === 'All' ? products : products.filter(p => p.category === filter);
+  grid.innerHTML = list.map((p, i) => `
+    <div class="product-card">
+      <div class="product-img" style="background:${bgColors[i % bgColors.length]}">${p.emoji}</div>
+      <div class="product-info">
+        ${p.badge ? `<span class="badge-tag badge-${p.badge}">${p.badge === 'sale' ? 'Sale' : 'New'}</span>` : ''}
+        <div class="stars">${stars(p.rating)}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-brand">${p.brand}</div>
+        <div class="product-bottom">
+          <div>
+            <span class="product-price">₹${p.price.toLocaleString()}</span>
+            ${p.old ? `<span class="product-old">₹${p.old.toLocaleString()}</span>` : ''}
+          </div>
+          <button class="add-btn" onclick="addToCart()">+</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+}
+
+function addToCart() {
+  cart++;
+  document.getElementById('cart-count').textContent = cart;
+  const toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 2000);
+}
+
+renderProducts('All');
+</script>
+
+</body>
+</html>
